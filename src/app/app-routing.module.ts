@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { Routes, RouterModule, PreloadAllModules } from '@angular/router';
+import { Routes, RouterModule, PreloadAllModules, NoPreloading } from '@angular/router';
 import { AuthenticatedUserGuard } from './modules/authentication/guards/authenticated-user.guard';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
@@ -176,6 +176,11 @@ const routes: Routes = [
         canActivate: [AuthenticatedUserGuard],
     },
     {
+        path: 'signing',
+        loadChildren: () => import('./components/signing/signing.module').then(m => m.SigningModule),
+        canActivate: [AuthenticatedUserGuard],
+    },
+    {
         path: 'account',
         loadChildren: () => import('./components/account/account.module').then(m => m.AccountModule),
     },
@@ -194,7 +199,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-    imports: [RouterModule.forRoot(routes, { preloadingStrategy: PreloadAllModules, useHash: true, relativeLinkResolution: 'legacy' })],
+    imports: [RouterModule.forRoot(routes, { preloadingStrategy: NoPreloading, useHash: true, relativeLinkResolution: 'legacy' })],
     exports: [RouterModule],
 })
 export class AppRoutingModule { }
